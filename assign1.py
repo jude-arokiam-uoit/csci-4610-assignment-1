@@ -5,10 +5,10 @@ from Queue import *
 import math
 
 # bounds of the window, in lat/long
-LEFTLON = -78.528
-RIGHTLON = -78.828
-TOPLAT = 43.943
-BOTLAT = 43.543
+LEFTLON = -78.8862900
+RIGHTLON = -78.8835700
+TOPLAT = 43.8717500
+BOTLAT = 43.8706500
 WIDTH = RIGHTLON-LEFTLON
 HEIGHT = TOPLAT-BOTLAT
 # ratio of one degree of longitude to one degree of latitude 
@@ -279,6 +279,7 @@ def build_graph(elevs):
     ''' Build the search graph from the OpenStreetMap XML. '''
     tree = ET.parse('map_RAILWAYREGION.osm')
     root = tree.getroot()
+    print root
 
     nodes = dict()
     ways = dict()
@@ -297,8 +298,7 @@ def build_graph(elevs):
                 el = 0
             nodes[(long)(item.get('id'))] = Node((long)(item.get('id')),coords,el)            
         elif item.tag == 'way':
-            if item.get('id') == '5447299': #main coastline way ID
-                print item.get('id')
+            if item.get('id') == '137623744': #main coastline way ID
                 for thing in item:
                     if thing.tag == 'nd':
                         coastnodes.append((long)(thing.get('ref')))
@@ -335,8 +335,8 @@ def build_graph(elevs):
                         thisn = nextn                
                 ways[wayid].nodes = nlist
     print len(coastnodes)
-    #print coastnodes[0]
-    print coastnodes
+    print coastnodes[0]
+    #print coastnodes
     print nodes[coastnodes[0]]
     return nodes, ways, coastnodes
 
