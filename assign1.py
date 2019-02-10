@@ -340,7 +340,7 @@ def build_graph(elevs):
     print nodes[coastnodes[0]]
     return nodes, ways, coastnodes
 
-elevs = build_elevs("n43_w114_1arc_v2.hdr")
+elevs = build_elevs("n43_w114_1arc_v2.bil")
 nodes, ways, coastnodes = build_graph(elevs)
 
 master = Tk()
