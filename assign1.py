@@ -280,7 +280,7 @@ def build_elevs(efilename):
     estr = efile.read()
     elevs = []
     for spot in range(0,len(estr),2):
-        elevs.append(struct.unpack('>h',estr[spot:spot+2])[0])
+        elevs.append(struct.unpack('<h',estr[spot:spot+2])[0])
     return elevs
 
 def build_graph(elevs):
