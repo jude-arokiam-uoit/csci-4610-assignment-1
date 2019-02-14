@@ -194,6 +194,8 @@ class PlanWin(Frame):
             print "Sorry, not enough info."
             return
         print ("From", self.startnode.id, "to", self.goalnode.id)
+        if self.startnode is None or self.goalnode is None:
+            print 'nodes are none'
         nodes,ways = self.planner.plan(self.startnode, self.goalnode)
         lastway = ""
         for wayname in ways:
