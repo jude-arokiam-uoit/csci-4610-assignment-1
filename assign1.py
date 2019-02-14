@@ -3,6 +3,7 @@ import struct
 import xml.etree.ElementTree as ET
 from Queue import *
 import math
+import logging
 
 # bounds of the window, in lat/long
 LEFTLON = -78.8862900
@@ -206,6 +207,10 @@ class PlanWin(Frame):
             coords.append(npos[1])
             #print node.id
         self.canvas.coords('path',*coords)
+
+    def print_nodes(self):
+        print ("1: ", self.startnode.id, "2: ", self.goalnode.id)
+        print (self.startnode)
         
     def __init__(self,master,nodes,ways,coastnodes,elevs):
         self.whatis = {}
@@ -249,6 +254,9 @@ class PlanWin(Frame):
         cb.pack(side=RIGHT,pady=5)
 
         sb = Button(thewin, text="Plan!", command=self.plan_path)
+        sb.pack(side=RIGHT,pady=5)
+
+        sb = Button(thewin, text="Nodes", command=self.print_nodes)
         sb.pack(side=RIGHT,pady=5)
 
         nodelablab = Label(thewin, text="Node:")
@@ -298,7 +306,7 @@ def build_graph(elevs):
                 el = 0
             nodes[(long)(item.get('id'))] = Node((long)(item.get('id')),coords,el)            
         elif item.tag == 'way':
-            if item.get('id') == '137623744': #main coastline way ID
+            if item.get('id') == '35928853': #main coastline way ID
                 for thing in item:
                     if thing.tag == 'nd':
                         coastnodes.append((long)(thing.get('ref')))
