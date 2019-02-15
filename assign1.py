@@ -24,6 +24,10 @@ EPIX = 3601
 MPERLAT = 111000
 MPERLON = MPERLAT*LONRATIO
 
+# way type
+way_types = []
+elevation_difference = []
+
 def node_dist(n1, n2):
     ''' Distance between nodes n1 and n2, in meters. '''
     dx = (n2.pos[0]-n1.pos[0])*MPERLON
@@ -61,10 +65,23 @@ class Edge():
         self.way = w
         self.dest = d
         self.cost = node_dist(src,d)
+
+        difference = abs(d.elev - src.elev)
+
         if d.elev > src.elev:
-            self.cost += (d.elev-src.elev)*2
-            if self.way.type == 'steps':
-                self.cost *= 1.5
+            #A steep uphill way will increase cost
+            if difference > 30:
+                self.cost += difference*2
+            else:
+                self.cost += (difference)*0.5   
+        else:            
+            #A steep downhill way will increase cost
+            if difference > 30:
+                self.cost += difference*2
+            else:
+                self.cost -= (difference)*0.5
+
+        way_types.append(self.way.type)
 
 class Way():
     ''' A way is an entire street, for drawing, not searching. '''
@@ -85,7 +102,10 @@ class Planner():
         '''
         Heuristic function is just straight-line (flat) distance.
         Since the actual cost only adds to this distance, this is admissible.
+
+        Refer to Edge class for heuristic cost function (start line 61)
         '''
+
         return node_dist(node,gnode)
     
     def plan(self,s,g):
@@ -352,6 +372,7 @@ def build_graph(elevs):
 
 elevs = build_elevs("n43_w114_1arc_v2.bil")
 nodes, ways, coastnodes = build_graph(elevs)
+print set(way_types)
 
 master = Tk()
 thewin = PlanWin(master,nodes,ways,coastnodes,elevs)
