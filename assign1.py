@@ -6,10 +6,10 @@ import math
 import logging
 
 # bounds of the window, in lat/long
-LEFTLON = -78.8862900
-RIGHTLON = -78.8835700
-TOPLAT = 43.8717500
-BOTLAT = 43.8706500
+LEFTLON = -78.9697000
+RIGHTLON = -78.9148000
+TOPLAT = 43.9187000
+BOTLAT = 43.8843000
 WIDTH = RIGHTLON-LEFTLON
 HEIGHT = TOPLAT-BOTLAT
 # ratio of one degree of longitude to one degree of latitude 
@@ -307,7 +307,7 @@ def build_elevs(efilename):
 
 def build_graph(elevs):
     ''' Build the search graph from the OpenStreetMap XML. '''
-    tree = ET.parse('map_RAILWAYREGION.osm')
+    tree = ET.parse('whitby.osm')
     root = tree.getroot()
     print root
 
@@ -328,7 +328,7 @@ def build_graph(elevs):
                 el = 0
             nodes[(long)(item.get('id'))] = Node((long)(item.get('id')),coords,el)            
         elif item.tag == 'way':
-            if item.get('id') == '35928853': #main coastline way ID
+            if item.get('id') == '26250657': #main coastline way ID
                 for thing in item:
                     if thing.tag == 'nd':
                         coastnodes.append((long)(thing.get('ref')))
